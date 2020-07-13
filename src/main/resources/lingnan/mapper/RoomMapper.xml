@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lingnan.mapper.RoomMapper">
+
+
+<!-- json数据访问 计数数据条数 -->
+    <select id="countAllRoom" resultType="java.lang.Integer">
+        select count(*) from room 
+    </select>
+<!-- json 动态查询信息 -->
+    <!-- 退房房间数量加1 -->
+   
+    <!-- 更新成功库存加1 -->
+<update id="stockAddOne"  parameterType="java.lang.Integer">
+		 update room
+        <set>
+            <if test="roomStock != null and roomStock != ''">
+                roomStock = roomStock+1
+            </if>
+           
+        </set>
+		where roomId = #{roomId}
+	</update>
+ <!-- 更新成功库存减一 -->
+<update id="stockOne">
+		 update room
+        <set>
+            <if test="roomStock != null and roomStock != ''">
+                roomStock = roomStock-1
+            </if>
+           
+        </set>
+		where roomId = #{roomId}
+	</update>
+<!-- 动态语句查询-->
+    <select id="findByAll"  resultType="lingnan.pojo.Room" parameterType="lingnan.pojo.Room">
+ select * from room 
+ <where>
+ <trim  suffixOverrides="and">
+  <if test="roomId!=null">roomId=#{roomId} and</if>
+  <if test="roomType!=null">roomType like concat('%',#{roomType},'%') and</if>
+  <if test="roomPrice!=null">roomPrice=#{roomPrice} and</if>
+  <if test="roomStock!=null">roomStock=#{roomStock} and</if>
+  <if test="image!=null">image like concat('%',#{image},'%') and</if>
+  <if test="formu!=null">formu like concat('%',#{formu},'%') and</if>
+ </trim>
+</where>
+</select>
+	<select id="getByRoomId" resultType="Room">
+		select * from room where roomId =
+		#{id}
+	</select>
+
+	<select id="getByType" resultType="Room">
+        select * from room 
+      <where>
+          <if test="roomType != null">
+               roomType like concat('%',#{roomType},'%');
+          </if>
+      </where> 
+    </select>
+	<select id="getList" resultType="Room">
+		select * from room
+	</select>
+
+	<insert id="save">
+		insert into room
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roomId != null">
+				roomId,
+			</if>
+			<if test="roomType != null">
+				roomType,
+			</if>
+			<if test="roomPrice != null">
+				roomPrice,
+			</if>
+			<if test="roomStock != null">
+				roomStock,
+			</if>
+			<if test="formu != null">
+				formu,
+			</if>
+			<if test="image != null">
+				image,
+			</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roomId != null">
+				#{roomId},
+			</if>
+			<if test="roomType != null">
+				#{roomType},
+			</if>
+			<if test="roomPrice != null">
+				#{roomPrice},
+			</if>
+			<if test="roomStock != null">
+				#{roomStock},
+			</if>
+			<if test="formu != null">
+				#{formu},
+			</if>
+			<if test="image != null">
+				#{image},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="update">
+		update room set
+		<trim suffixOverrides=",">
+			<if test="roomType != null">
+				roomType = #{roomType},
+			</if>
+			<if test="roomPrice != null">
+				roomPrice = #{roomPrice},
+			</if>
+			<if test="roomStock != null">
+				roomStock = #{roomStock},
+			</if>
+			<if test="formu != null">
+				formu = #{formu},
+			</if>
+			<if test="image != null">
+				image = #{image},
+			</if>
+		</trim>
+		where roomId = #{roomId}
+	</update>
+	<delete id="delete">
+	   delete from room where roomId=#{roomId} 
+	</delete>
+   
+</mapper>

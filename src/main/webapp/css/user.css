@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+/* .layui-btn-sm{
+	background-color: #c2c2c2;
+}
+ */
+.layui-form-label{
+	width: 150px;
+}
+
+.layui-input{
+	height: 42px;
+}

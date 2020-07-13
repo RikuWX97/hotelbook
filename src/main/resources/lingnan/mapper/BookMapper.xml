@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lingnan.mapper.BookMapper">
+    <!--
+        namespace：名称空间
+            比如下面配置了一个select，要使用的话必须通过namespace.id
+        select：
+            id：该sql命令的获取标识
+            resultType：类的全限定名，返回类型
+    -->
+    
+    
+<!-- 根据订单号查询订单 -->
+    <select id="getBookByBookId" resultType="lingnan.pojo.Book">
+        select * from book where bookId = #{bookId}
+    </select>
+<!-- 根据用户id查询订单 -->
+<select id="getBookByUserId" resultType="lingnan.pojo.Book">
+    select * from book where userId = #{userId}
+</select>    
+<!-- json数据访问 -->
+    <select id="getListJson" resultType="lingnan.pojo.Book">
+        select * from book 
+    </select>
+<!-- json数据访问删除时查询该条记录是否存在 -->
+    <select id="getListDeleteJson" resultType="lingnan.pojo.Book">
+        select * from book 
+        <where>bookId = #{bookId}</where>
+    </select>
+<!-- json数据访问 计数数据条数 -->
+    <select id="countAllBook" resultType="java.lang.Integer">
+        select count(*) from book 
+    </select>
+
+<!-- 查询状态为1和2的订单 -->
+    <select id="getBookAllByStateNotZero" resultType="lingnan.pojo.Book">
+        select * from book 
+        <where>
+        bookState !=0
+        </where>
+    </select>
+<!-- 对所有用户 查询指定状态的订单  -->
+    <select id="getBookAllByState" resultType="lingnan.pojo.Book">
+        select * from book 
+        <where>
+        bookState=#{bookState}
+        </where>
+    </select>
+<!-- 对所有用户  查询所有订单  -->
+    <select id="getBookAllByUser" resultType="lingnan.pojo.Book">
+        select * from book 
+        <where>
+  <if test="userId!=null">userId=#{userId}</if>
+        </where>
+    </select>
+<!-- 对单用户 查询指定状态的订单  -->
+    <select id="getBookAllByStateUser" resultType="lingnan.pojo.Book">
+        select * from book 
+        <where>
+         <trim  suffixOverrides="and">
+  <if test="userId!=null">userId=#{userId} and</if>
+  <if test="bookState!=null">bookState=#{bookState} and</if>
+ </trim>
+        </where>
+    </select>
+<!-- 对单用户 查询所有订单  -->
+    <select id="getBookAll" resultType="lingnan.pojo.Book">
+        select * from book 
+    </select>
+    
+<!-- 模糊查询 -->
+ <!--    <select id="getUserByName" resultType="User">
+        select * from user
+<where>
+
+<if test="name!=null">name like concat('%', #{name}, '%')</if>
+</where>
+    </select> -->
+    
+<!-- 登录账号密码验证查询 -->
+  <!--   <select id="login" resultType="java.lang.Integer" >
+        select  sSuper from user where name = #{name} and password = #{password}
+    </select>
+     -->
+    
+  <!--   <update id="updatetUser" resultType="com.lingnan.model.User"  "java.util.map">
+        update user set name=#{name},password=#{password} where id = #{id}
+    </update> -->
+    
+    
+<!-- 删除 -->
+    <delete id="deleteByBoodId" parameterType="java.lang.Integer">
+        delete from book where bookId = #{bookId}
+    </delete>
+    
+<!-- 更新密码 -->
+<!--     <delete id="updateUserByPassword" parameterType="com.lingnan.model.User">
+        update user set password = #{password} 
+        <where>
+        name=#{name}
+        </where>
+    </delete> -->
+
+	
+<!-- 查询 -->
+<!-- 根据所有查id-->
+    <select id="getBookIdByAll" resultType="java.lang.Integer" parameterType="lingnan.pojo.Book">
+ select bookId from book 
+ <where>
+ <trim  suffixOverrides="and">
+  <if test="bookId!=null">bookId=#{bookId} and</if>
+  <if test="userId!=null">userId=#{userId} and</if>
+  <if test="roomId!=null">roomId=#{roomId} and</if>
+  <if test="bookPhone!=null">bookPhone=#{bookPhone} and</if>
+  <if test="email!=null">email=#{email} and</if>
+  <if test="bookDate!=null">bookDate=#{bookDate} and</if>
+  <if test="arriveDate!=null">arriveDate=#{arriveDate} and</if>
+  <if test="bookPrice!=null">bookPrice=#{bookPrice} and</if>
+  <if test="bookState!=null">bookState=#{bookState} and</if>
+  <if test="bookName!=null">bookName=#{bookName} and</if>
+ </trim>
+</where>
+</select>	
+	
+	
+<!-- 查询 -->
+<!-- 动态语句查询-->
+    <select id="findByAll"  resultType="lingnan.pojo.Book" parameterType="lingnan.pojo.Book">
+ select * from book 
+ <where>
+ <trim  suffixOverrides="and">
+  <if test="bookId!=null">bookId=#{bookId} and</if>
+  <if test="userId!=null">userId=#{userId} and</if>
+  <if test="roomId!=null">roomId=#{roomId} and</if>
+  <if test="bookPhone!=null">bookPhone=#{bookPhone} and</if>
+  <if test="email!=null">email=#{email} and</if>
+  <if test="bookDate!=null">bookDate=#{bookDate} and</if>
+  <if test="arriveDate!=null">arriveDate=#{arriveDate} and</if>
+  <if test="bookPrice!=null">bookPrice=#{bookPrice} and</if>
+  <if test="bookState!=null">bookState=#{bookState} and</if>
+  <if test="bookName!=null">bookName=#{bookName} and</if>
+ </trim>
+</where>
+</select>
+
+
+<!-- 更新 -->
+<!-- 动态语句更新 -->
+    <update id="updateByBookId"  parameterType="lingnan.pojo.Book">
+ UPDATE book
+ <trim prefix="set" suffixOverrides=",">
+  <if test="bookId!=null">bookId=#{bookId},</if>
+  <if test="userId!=null">userId=#{userId},</if>
+  <if test="roomId!=null">roomId=#{roomId},</if>
+  <if test="bookPhone!=null">bookPhone=#{bookPhone},</if>
+  <if test="email!=null">email=#{email},</if>
+  <if test="bookDate!=null">bookDate=#{bookDate},</if>
+  <if test="arriveDate!=null">arriveDate=#{arriveDate},</if>
+  <if test="bookPrice!=null">bookPrice=#{bookPrice},</if>
+  <if test="bookState!=null">bookState=#{bookState},</if>
+  <if test="bookName!=null">bookName=#{bookName},</if>
+ </trim>
+ WHERE bookId=#{bookId}
+</update>
+
+<!-- 插入 -->
+
+<!-- 动态sql插入方法   -->
+  <!-- 对应的插入字段的名字 -->
+  <sql id="key">
+   <trim suffixOverrides=",">
+    <if test="bookId=null and bookId!=''">
+     bookId,
+    </if>
+    <if test="userId!=null and userId!=''">
+     userId,
+    </if>
+    <if test="roomId!=null and roomId!=''">
+     roomId,
+    </if>
+    <if test="bookPhone!=null and bookPhone!=''">
+     bookPhone,
+    </if>
+    <if test="email!=null and email!=''">
+     email,
+    </if>
+    <if test="bookDate!=null ">
+     bookDate,
+    </if>
+    <if test="arriveDate!=null ">
+     arriveDate,
+    </if>
+    <if test="bookState!=null and bookState!=''">
+     bookState,
+    </if>
+    <if test="bookPrice!=null and bookPrice!=''">
+     bookPrice,
+    </if>
+    <if test="bookName!=null and bookName!=''">
+     bookName,
+    </if>
+   </trim>
+  </sql>
+  
+  <!-- 对应的插入字段的值 -->
+  <sql id="values">
+   <trim suffixOverrides=",">
+    <if test="bookId=null and bookId!=''">
+     #{bookId},
+    </if>
+    <if test="userId!=null and userId!=''">
+     #{userId},
+    </if>
+    <if test="roomId!=null and roomId!=''">
+     #{roomId},
+    </if>
+    <if test="bookPhone!=null and bookPhone!=''">
+     #{bookPhone},
+    </if>
+    <if test="email!=null and email!=''">
+     #{email},
+    </if>
+    <if test="bookDate!=null ">
+     #{bookDate},
+    </if>
+    <if test="arriveDate!=null">
+     #{arriveDate},
+    </if>
+    <if test="bookState!=null and bookState!=''">
+     #{bookState},
+    </if>
+    <if test="bookPrice!=null and bookPrice!=''">
+     #{bookPrice},
+    </if>
+    <if test="bookName!=null and bookName!=''">
+     #{bookName},
+    </if>
+   </trim>
+  </sql>
+  
+  <insert id="insertBook" parameterType="lingnan.pojo.Book">
+   insert into book(<include refid="key"/>) 
+    values(<include refid="values"/>)
+  </insert>
+
+<!-- 多表关联映射查询1 -->
+<!-- <resultMap id="detailUser" type="User">
+ <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="password" column="password" />
+        <result property="phone" column="phone" />
+    <association property="prodCatalog" javaType="ProdCatalog">
+              <id property="id" column="id" />
+  			  <result property="name" column="name" />
+              <result property="prodId" column="prodId" />
+    </association>
+</resultMap> -->
+<!-- <select id="getUserProdCatalogByUserId" resultMap="detailUser">
+    select * from prodCatalog a, user b
+    <where>
+        a.prodId = b.id and b.id=#{id};
+    </where>
+</select> -->
+
+<!--同上 多表关联映射查询 自动映射 
+<resultMap id="detailUser" type="User" autoMapping="true">
+    <association property="prodCatalog" javaType="ProdCatalog"  autoMapping="true">
+    </association>
+</resultMap>
+<select id="getUserProdCatalogByUserId" resultMap="detailUser">
+    select * from prodCatalog a, user b
+    <where>
+        a.prodId = b.id and b.id=#{id};
+    </where>
+</select>
+-->
+
+
+</mapper>

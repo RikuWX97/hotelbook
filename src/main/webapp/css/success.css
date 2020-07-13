@@ -1,0 +1,24 @@
+form h1{
+	margin-top: 30px;
+}
+
+.container{
+    width: 900px;
+}
+
+.layui-input-block{
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+.layui-row{
+    margin-top: 50px;
+    margin-bottom: 30px;
+    border:2px solid #cbc6c6;
+    border-radius: 20px;
+}
+
+.layui-btn{
+    padding: 0 45%;
+}
+

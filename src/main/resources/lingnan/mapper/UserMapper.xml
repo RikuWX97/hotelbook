@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lingnan.mapper.UserMapper">
+
+    <select id="login" resultType="User">
+        select * from user where name = #{name} and password = #{password}
+    </select>
+<!-- JSON动态查询 -->
+<!-- 动态语句查询-->
+    <select id="findByAll"  resultType="lingnan.pojo.User" parameterType="lingnan.pojo.User">
+ select * from user 
+ <where>
+ <trim  suffixOverrides="and">
+  <if test="id!=null">id=#{id} and</if>
+  <if test="name!=null">name like concat('%',#{name},'%') and</if>
+  <if test="password!=null">password=#{password} and</if>
+  <if test="sex!=null">sex=#{sex} and</if>
+  <if test="phone!=null">phone like concat('%',#{phone},'%') and</if>
+  <if test="email!=null">email like concat('%',#{email},'%') and</if>
+  <if test="access!=null">access=#{access} and</if>
+ </trim>
+</where>
+</select>
+<!-- json数据访问 计数数据条数 -->
+    <select id="countAllUser" resultType="java.lang.Integer">
+        select count(*) from user 
+    </select>
+
+    <select id="getById" resultType="User">
+        select * from user where id = #{id}
+    </select>
+
+    <select id="getByName" resultType="User">
+        select * from user where name = #{name}
+    </select>
+
+    <select id="getList" resultType="User">
+        select * from user
+    </select>
+
+    <insert id="insert">
+        insert into user
+        <trim prefix = "(" suffix = ")" suffixOverrides = ",">
+            <if test = "id != null">
+                id,
+            </if>
+            <if test = "name != null">
+                name,
+            </if>
+            <if test = "password != null">
+                password,
+            </if>
+            <if test = "sex != null">
+                sex,
+            </if>
+            <if test = "email != null">
+                email,
+            </if>
+            <if test = "phone != null">
+                phone,
+            </if>
+            <if test = "regDate != null">
+                reg_date,
+            </if>
+            <if test = "lastLoginDate != null">
+                last_login_date,
+            </if>
+            <if test = "access != null">
+                access,
+            </if>
+        </trim>
+        values
+        <trim prefix = "(" suffix = ")" suffixOverrides = ",">
+            <if test = "id != null">
+                #{id},
+            </if>
+            <if test = "name != null">
+                #{name},
+            </if>
+            <if test = "password != null">
+                #{password},
+            </if>
+            <if test = "sex != null">
+                #{sex},
+            </if>
+            <if test = "email != null">
+                #{email},
+            </if>
+            <if test = "phone != null">
+                #{phone},
+            </if>
+            <if test = "regDate != null">
+                #{regDate},
+            </if>
+            <if test = "lastLoginDate != null">
+                #{lastLoginDate},
+            </if>
+            <if test = "access != null">
+                #{access},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="user" >
+        update user
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="regDate != null and regDate != ''">
+                reg_date = #{regDate},
+            </if>
+            <if test="lastLoginDate != null and lastLoginDate != ''">
+                last_login_date = #{lastLoginDate},
+            </if>
+            <if test="access != null">
+                access = #{access},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    
+    <!-- 更新登录时间根据用户名 -->
+ <update id="updateLoginDate" parameterType="user" >
+        update user 
+        <set>
+            <if test="lastLoginDate!=null">
+                last_login_date = #{lastLoginDate},
+            </if>
+        </set>
+        where name = #{name}
+    </update>
+<!--    <update id="update">-->
+<!--        update user set-->
+<!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--            <if test="name != null">-->
+<!--                name = #{name},-->
+<!--            </if>-->
+<!--            <if test="password != null">-->
+<!--                password = #{password},-->
+<!--            </if>-->
+<!--            <if test="email != null">-->
+<!--                email = #{email},-->
+<!--            </if>-->
+<!--            <if test="phone != null">-->
+<!--                phone = #{phone},-->
+<!--            </if>-->
+<!--            <if test="regDate != null">-->
+<!--                reg_date = #{reg_date},-->
+<!--            </if>-->
+<!--            <if test="lastLoginDate != null">-->
+<!--                last_login_date = #{last_login_date},-->
+<!--            </if>-->
+<!--            <if test="access != null">-->
+<!--                access = #{access},-->
+<!--            </if>-->
+<!--        </trim>-->
+<!--        where id = #{id}-->
+<!--    </update>-->
+
+    <delete id="deleteByIds">
+        delete from user
+        <where>
+            id
+            <!--id in (id1, id2, id3)-->
+            <!--先确定好自己的目标sql，再确定由foreach帮你拼接的部分-->
+            <foreach collection = "list" item = "item" open = "in (" close = ")" separator = ",">
+                #{item}
+            </foreach>
+        </where>
+    </delete>
+
+</mapper>

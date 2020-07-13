@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        				   https://www.springframework.org/schema/beans/spring-beans.xsd
+        				   http://www.springframework.org/schema/context
+        				   https://www.springframework.org/schema/context/spring-context.xsd
+        				   http://www.springframework.org/schema/tx
+        				   https://www.springframework.org/schema/tx/spring-tx.xsd
+        				   http://www.springframework.org/schema/aop
+        				   https://www.springframework.org/schema/aop/spring-aop.xsd
+        				   http://www.springframework.org/schema/mvc
+        				   https://www.springframework.org/schema/mvc/spring-mvc.xsd
+        				   http://mybatis.org/schema/mybatis-spring
+        				   http://mybatis.org/schema/mybatis-spring.xsd
+						   ">
+	<!--添加注解支持-->
+	<context:annotation-config />
+	<context:component-scan base-package="lingnan.controller" />
+	<!-- 扫描bean 视图解析器 -->
+	<context:component-scan base-package="lingnan"/>
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<property name ="prefix" value="/WEB-INF/pages/"></property>
+	<property name ="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!--当只是去到某一个页面，不想写方法。可能直接在springmvc配置文件中写 会引起一个严重的后果，controller中的所有url全部是404-->
+	<mvc:view-controller path="/test" view-name="success"></mvc:view-controller>
+	<!--将springmvc，功能全开-->
+	<mvc:annotation-driven />
+	
+	<!-- 静态资源处理 -->
+	<!--告诉springmvc，自己映射的请求就自己处理，不能处理的请求就交给tomcat-->
+	<mvc:default-servlet-handler />
+	
+	<!-- 数据格式转换 -->
+	<mvc:annotation-driven conversion-service="convertService"/>
+    <bean id="convertService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean"/>
+	<!-- 网页拦截器 -->
+	<!--静态资源不拦截-->
+    <!-- <mvc:resources location="/" mapping="/**"/> -->
+  <!--   注册拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/**/*.css"/>
+            <mvc:exclude-mapping path="/**/layui/**"/>
+            <mvc:exclude-mapping path="/**/assets/**"/>
+            <mvc:exclude-mapping path="/**/fonts/**"/>
+            <mvc:exclude-mapping path="/**/*.js"/>
+            <bean class="lingnan.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>

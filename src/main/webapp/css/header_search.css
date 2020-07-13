@@ -1,0 +1,35 @@
+.header_search{
+    float: right;
+    padding: 32px 260px 0 0px;
+}
+.header_search .search{
+    width: 270px;
+    height: 34px;
+    background: #FFFFFF;
+    font-size: 14px;
+    text-indent: 10px;
+    border: 1px solid #fec200;
+}
+ 
+#searchBox ul{
+    border-bottom: 1px solid #fec200;
+    border-left: 1px solid #fec200;
+    border-right: 1px solid #fec200;
+}
+#searchBox ul li {
+    width: 257px;
+    height: 30px;
+    background: #ffffff;
+    font-size: 15px;
+    padding-left: 13px;
+    color: #000000;
+    line-height:30px;
+}
+#searchBox ul li a{
+    text-decoration: none;
+    color: #000000;
+}
+#searchBox ul li a:hover{
+    text-decoration: none;
+    color: #000000;
+}

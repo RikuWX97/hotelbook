@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        				   https://www.springframework.org/schema/beans/spring-beans.xsd
+        				   http://www.springframework.org/schema/context
+        				   https://www.springframework.org/schema/context/spring-context.xsd
+        				   http://www.springframework.org/schema/tx
+        				   https://www.springframework.org/schema/tx/spring-tx.xsd
+        				   http://www.springframework.org/schema/aop
+        				   https://www.springframework.org/schema/aop/spring-aop.xsd
+        				   http://mybatis.org/schema/mybatis-spring
+        				   http://mybatis.org/schema/mybatis-spring.xsd
+						   ">
+		<!--引入jdbc.properties-->
+		<bean id="book" class="lingnan.pojo.Book"></bean>
+		<bean id="room" class="lingnan.pojo.Room"></bean>
+		<bean id="user" class="lingnan.pojo.User"></bean>
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!--添加注解支持-->
+	<context:annotation-config />
+	<context:component-scan base-package="lingnan.service" />
+	<!--配置数据源
+		1.spring自带
+		2.c3p0
+		3.DBCP
+		4.JNDI：如果应用配置在高性能的应用服务器（如WebLogic或Websphere等）上，
+			我们可能更希望使用应用服务器本身提供的数据源。应用服务器的数据源 使用JNDI开放调用者使用，
+			Spring为此专门提供引用JNDI资源的JndiObjectFactoryBean类
+		5.druid
+	-->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${driver}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${user}" />
+		<property name="password" value="${password}" />
+	</bean>
+	
+	
+		<!-- 引入springmvc.xml -->		   
+<import resource="springmvc-context.xml"/>
+<import resource="spring-tx.xml"/>
+<import resource="spring-mybatis.xml"/>
+
+</beans>
